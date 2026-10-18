@@ -1,12 +1,15 @@
 # ✈️ claude-in-flight
 
-Text coding tasks to Claude Code from a plane — or anywhere you only have iMessage.
+**Code from 34,000 ft. For free.** Text tasks to Claude Code over free in-flight messaging. No Wi-Fi to buy.
 
-![demo](docs/demo.gif)
+![demo](docs/demo-phone.gif)
 
-<sub>[Watch in HD](docs/demo.mp4) · made with [Remotion](https://remotion.dev), source in [`video/`](video)</sub>
+<sub>[Watch in HD](docs/demo-phone.mp4) · made with [Remotion](https://remotion.dev), source in [`video/`](video)</sub>
 
-In-flight Wi-Fi often lets you message for free but blocks everything else. claude-in-flight connects an iMessage agent (like [Poke](https://poke.com)) to a [Claude Code routine](https://code.claude.com/docs/en/routines) running in Anthropic's cloud, on your own Claude plan. You text a task; Claude works in your repos, opens a PR, and texts you back.
+claude-in-flight connects an iMessage agent (like [Poke](https://poke.com)) to a [Claude Code routine](https://code.claude.com/docs/en/routines) running in Anthropic's cloud, on your own Claude plan. You text a task; Claude works in your repos, opens a PR, and texts you back.
+
+- **Free on many flights.** United, Delta, Alaska, Emirates and others offer free iMessage on board, usually text-only, which is all this needs. Check your airline before you fly.
+- **Way faster than coding over plane Wi-Fi.** The work runs in the cloud on a fast connection; your phone only sends and receives a few texts.
 
 ```
 you (iMessage) → your agent → relay (this repo, on Vercel) → Claude Code routine (cloud)
@@ -14,7 +17,7 @@ you (iMessage) → your agent → relay (this repo, on Vercel) → Claude Code r
        └───────────── summary + PR link ◀── relay ◀───────────────────┘
 ```
 
-> Unofficial. Not affiliated with Anthropic or Poke.
+> Unofficial. Not affiliated with Anthropic, Poke, or any airline. Airline free-messaging policies vary by route and aircraft and change over time.
 
 ## What you need
 
@@ -90,7 +93,7 @@ Then text it: *"Ask Claude Code to add a hello line to the README in &lt;repo&gt
 | [`api/mcp.ts`](api/mcp.ts) | MCP server: `start_claude_code_task` fires the routine; `get_task_result` reads results |
 | [`api/result.ts`](api/result.ts) | Claude posts its summary here; stored in Redis and pushed to `NOTIFY_URL` |
 | [`api/setup.ts`](api/setup.ts) | The setup page at your deployment's root |
-| [`video/`](video) | The demo video (Remotion) |
+| [`video/`](video) | The demo videos (Remotion): `DemoPhone` in this README, plus a dark `Demo` cut |
 
 ## License
 

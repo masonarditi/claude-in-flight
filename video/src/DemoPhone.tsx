@@ -1,6 +1,7 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 
-const C = { bg: "#fbfbfa", blue: "#0a84ff", gray: "#e9e9eb", ink: "#111", dim: "#8e8e93" };
+const C = { bg: "#fbfbfa", blue: "#0a84ff", gray: "#e9e9eb", ink: "#111", dim: "#8e8e93", orange: "#d97757" };
+const AIRLINES = ["UNITED", "DELTA", "ALASKA", "EMIRATES"];
 const sans = "-apple-system, 'SF Pro Text', system-ui, sans-serif";
 const serif = "'New York', 'Iowan Old Style', Georgia, serif";
 
@@ -78,8 +79,8 @@ const Header = () => (
   <div style={{ height: 92, display: "flex", alignItems: "flex-start", justifyContent: "space-between", padding: "4px 16px 0" }}>
     <Circle><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 2 L2 9 L9 16" stroke="#000" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg></Circle>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <div style={{ width: 52, height: 52, borderRadius: 26, background: "#eaf2fd", display: "grid", placeItems: "center", fontSize: 26, boxShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>✈️</div>
-      <div style={{ marginTop: -6, padding: "3px 10px", borderRadius: 12, background: "#fff", boxShadow: "0 1px 6px rgba(0,0,0,0.12)", fontSize: 12.5, fontWeight: 600 }}>Agent ›</div>
+      <div style={{ width: 52, height: 52, borderRadius: 26, background: C.orange, display: "grid", placeItems: "center", fontSize: 26, boxShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>✈️</div>
+      <div style={{ marginTop: -6, padding: "3px 10px", borderRadius: 12, background: "#fff", boxShadow: "0 1px 6px rgba(0,0,0,0.12)", fontSize: 12.5, fontWeight: 600 }}>Claude in Flight ›</div>
     </div>
     <Circle><svg width="22" height="15" viewBox="0 0 22 15"><rect x="1" y="1.5" width="13.5" height="12" rx="3" stroke="#000" strokeWidth="1.8" fill="none" /><path d="M15.5 6 L20.5 3 L20.5 12 L15.5 9 Z" stroke="#000" strokeWidth="1.8" fill="none" strokeLinejoin="round" /></svg></Circle>
   </div>
@@ -131,12 +132,29 @@ const Phone = () => {
   );
 };
 
+const Airline = ({ name, at }: { name: string; at: number }) => {
+  const p = useSpring(at);
+  return (
+    <div style={{ padding: "7px 14px", borderRadius: 10, border: "1px solid #e2e1dc", background: "#fff", fontFamily: sans, fontSize: 14, fontWeight: 800,
+      letterSpacing: 2.4, color: "#6b6a65", opacity: p, transform: `translateY(${(1 - p) * 10}px)` }}>{name}</div>
+  );
+};
+
 export const DemoPhone = () => (
   <AbsoluteFill style={{ background: C.bg, fontFamily: sans, flexDirection: "row", alignItems: "center", padding: "0 110px 0 100px", justifyContent: "space-between" }}>
     <div style={{ width: 600, display: "flex", flexDirection: "column", gap: 22 }}>
-      <div style={{ fontFamily: serif, fontSize: 68, lineHeight: 1.05, color: C.ink, letterSpacing: -1 }}>Code from<br />34,000 ft.</div>
-      <div style={{ fontFamily: serif, fontSize: 25, lineHeight: 1.4, color: "#55554f" }}>
-        Text Claude Code from any iMessage agent. It works in your repos, opens a PR, and texts you back.
+      <div style={{ fontFamily: serif, fontSize: 64, lineHeight: 1.05, color: C.ink, letterSpacing: -1 }}>
+        Code from 34,000 ft.<br /><span style={{ color: C.orange, fontStyle: "italic" }}>For free.</span>
+      </div>
+      <div style={{ fontFamily: serif, fontSize: 23, lineHeight: 1.4, color: "#55554f" }}>
+        Text Claude Code over free in-flight messaging. No Wi-Fi to buy. It works in the cloud, opens a PR, and texts you back. Way faster than coding over plane Wi-Fi.
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 1.5, color: C.dim }}>FREE MESSAGING ON</div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+          {AIRLINES.map((a, i) => <Airline key={a} name={a} at={20 + i * 8} />)}
+          <span style={{ fontSize: 14, color: C.dim, marginLeft: 4 }}>& more</span>
+        </div>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8, fontSize: 17, color: C.ink }}>
         <div style={{ width: 40, height: 40, borderRadius: 20, background: C.blue, display: "grid", placeItems: "center" }}>
