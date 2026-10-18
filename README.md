@@ -25,6 +25,14 @@ Claude **Pro or Max** · GitHub repos with the [Claude GitHub App](https://githu
 
 ## Setup (~5 min)
 
+**Easiest: let Claude Code do it.** Paste this into Claude Code:
+
+```
+Set up claude-in-flight for me by following https://raw.githubusercontent.com/masonarditi/claude-in-flight/master/docs/agent-setup.md step by step.
+```
+
+It deploys the relay to your Vercel account and walks you through the few clicks only you can do. Or set it up by hand:
+
 **1. Create the Claude task.** At [claude.ai/code/routines](https://claude.ai/code/routines) → **New task**:
 - Instructions: paste [`routine-prompt.md`](routine-prompt.md)
 - Model: select **Opus** explicitly (not Default)
