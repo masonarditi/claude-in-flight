@@ -1,9 +1,11 @@
 import { AbsoluteFill, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { siDelta, siEmirates, siJetblue, siQatarairways, siUnitedairlines } from "simple-icons";
+import { siAmericanairlines, siDelta, siSouthwestairlines, siUnitedairlines } from "simple-icons";
 import { svgPathBbox } from "svg-path-bbox";
 
 const C = { bg: "#fbfbfa", blue: "#0a84ff", gray: "#e9e9eb", ink: "#111", dim: "#8e8e93", orange: "#d97757" };
-const AIRLINES = [siUnitedairlines, siDelta, siJetblue, siEmirates, siQatarairways];
+const AIRLINES: { icon: { title: string; path: string }; crop?: number[] }[] = [
+  { icon: siUnitedairlines }, { icon: siDelta, crop: [0, 10.15, 4.2, 3.7] }, { icon: siAmericanairlines }, { icon: siSouthwestairlines },
+];
 
 const Plane = ({ size }: { size: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" style={{ transform: "rotate(45deg)" }}>
@@ -18,7 +20,7 @@ const sans = "-apple-system, 'SF Pro Text', system-ui, sans-serif";
 const serif = "'New York', 'Iowan Old Style', Georgia, serif";
 
 const ME1 = "ask claude code to add dark mode to the settings page in my-app";
-const T = { type1: 12, send1: 80, dots1: [96, 140], agent1: 140, note: 190, dots2: [206, 250], agent2: 250, agent3: 285, type2: 322, send2: 336, fade: [470, 505] };
+const T = { type1: 12, send1: 80, dots1: [96, 140], agent1: 140, note: 190, dots2: [206, 250], agent2: 250, photo: 272, agent3: 312, type2: 345, send2: 359, fade: [470, 505] };
 export const PHONE_DURATION = 600;
 
 const useSpring = (at: number) => {
@@ -63,6 +65,30 @@ const Dots = () => {
     </div>
   );
 };
+
+const Setting = ({ label, on, value }: { label: string; on?: boolean; value?: string }) => (
+  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 10px", borderRadius: 10, background: "#1d2028", fontSize: 11, color: "#e8e8ec" }}>
+    {label}
+    {value ? <span style={{ color: "#8e8e93" }}>{value} ›</span> : (
+      <div style={{ width: 30, height: 18, borderRadius: 9, background: on ? "#34c759" : "#3a3a3f", padding: 2, display: "flex", justifyContent: on ? "flex-end" : "flex-start" }}>
+        <div style={{ width: 14, height: 14, borderRadius: 7, background: "#fff" }} />
+      </div>
+    )}
+  </div>
+);
+
+const Shot = () => (
+  <div style={{ alignSelf: "flex-start", margin: "3px 4px", width: 196, height: 252, borderRadius: 18, overflow: "hidden", background: "#0f1116", border: "1px solid #e2e2e6",
+    display: "flex", flexDirection: "column", gap: 7, padding: "12px 10px" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: "#8e8e93" }}><span>my-app</span><span>localhost:3000/settings</span></div>
+    <div style={{ fontSize: 18, fontWeight: 700, color: "#fff", margin: "4px 2px 2px" }}>Settings</div>
+    <Setting label="Dark mode" on />
+    <Setting label="Notifications" on />
+    <Setting label="Language" value="English" />
+    <Setting label="Account" value="Mason" />
+    <div style={{ marginTop: "auto", alignSelf: "center", fontSize: 9, color: "#5d5d63" }}>screenshot · 9:42 AM</div>
+  </div>
+);
 
 const Center = ({ text }: { text: string }) => (
   <div style={{ alignSelf: "center", fontSize: 11.5, color: C.dim, margin: "10px 0 6px" }}>{text}</div>
@@ -133,6 +159,7 @@ const Phone = () => {
             <Row at={T.note} h={40}><Center text="30 seconds later" /></Row>
             <Row at={T.dots2[0]} until={T.dots2[1]} h={50}><Dots /></Row>
             <Row at={T.agent2}><Bubble text="done ✅ dark mode added to settings, tests pass" tail={false} /></Row>
+            <Row at={T.photo} h={270}><Shot /></Row>
             <Row at={T.agent3}><Bubble text="opened PR #42 in my-app ↗" /></Row>
             <Row at={T.send2} h={60}><Bubble me text="🙌" /></Row>
           </div>
@@ -144,12 +171,13 @@ const Phone = () => {
   );
 };
 
-const Airline = ({ icon, at }: { icon: { title: string; path: string }; at: number }) => {
+const Airline = ({ icon, crop, at }: { icon: { title: string; path: string }; crop?: number[]; at: number }) => {
   const p = useSpring(at);
   const [x0, y0, x1, y1] = svgPathBbox(icon.path);
-  const r = (x1 - x0) / (y1 - y0);
+  const [x, y, w, h] = crop ?? [x0, y0, x1 - x0, y1 - y0];
+  const r = w / h;
   return (
-    <svg width={Math.sqrt(1500 * r)} height={Math.sqrt(1500 / r)} viewBox={`${x0} ${y0} ${x1 - x0} ${y1 - y0}`} style={{ opacity: p * 0.75, transform: `translateY(${(1 - p) * 10}px)` }}>
+    <svg width={Math.sqrt(1500 * r)} height={Math.sqrt(1500 / r)} viewBox={`${x} ${y} ${w} ${h}`} style={{ opacity: p * 0.75, transform: `translateY(${(1 - p) * 10}px)` }}>
       <title>{icon.title}</title>
       <path d={icon.path} fill="#55554f" />
     </svg>
@@ -181,9 +209,9 @@ const Main = () => (
         Text Claude Code over free in-flight messaging. No Wi‑Fi to buy, and way faster than plane Wi‑Fi.
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 1.5, color: C.dim }}>FREE MESSAGING ON</div>
+        <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 1.5, color: C.dim }}>WORKS ON</div>
         <div style={{ display: "flex", gap: 26, alignItems: "center" }}>
-          {AIRLINES.map((a, i) => <Airline key={a.title} icon={a} at={20 + i * 8} />)}
+          {AIRLINES.map((a, i) => <Airline key={a.icon.title} {...a} at={20 + i * 8} />)}
           <span style={{ fontSize: 14, color: C.dim }}>& more</span>
         </div>
       </div>
