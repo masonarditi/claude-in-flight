@@ -1,4 +1,4 @@
-import { AbsoluteFill, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, interpolate, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { siAmericanairlines, siDelta, siSouthwestairlines, siUnitedairlines } from "simple-icons";
 import { svgPathBbox } from "svg-path-bbox";
 
@@ -196,7 +196,7 @@ const Main = () => (
   <AbsoluteFill style={{ background: C.bg, fontFamily: sans, flexDirection: "row", alignItems: "center", padding: "0 110px 0 100px", justifyContent: "space-between" }}>
     <div style={{ width: 600, display: "flex", flexDirection: "column", gap: 22 }}>
       <div style={{ fontFamily: serif, fontSize: 64, lineHeight: 1.05, color: C.ink, letterSpacing: -1 }}>
-        Code from 34,000 ft.<br /><span style={{ color: C.orange, fontStyle: "italic" }}>For free.</span>
+        Code from 34,000 ft.<br /><span style={{ background: "linear-gradient(180deg, #ffb67c, #ff9852)", WebkitBackgroundClip: "text", color: "transparent", fontStyle: "italic", paddingRight: 6 }}>For free.</span>
       </div>
       <div style={{ fontFamily: serif, fontSize: 24, lineHeight: 1.4, color: "#55554f" }}>
         Text Claude Code over free in-flight messaging. No Wi‑Fi to buy, and way faster than plane Wi‑Fi.
@@ -219,8 +219,20 @@ const Main = () => (
   </AbsoluteFill>
 );
 
+const Sfx = () => {
+  const ticks = [[T.type1, T.send1], [T.type2, T.send2], [T.type3, T.send3]].flatMap(([from, to]) => Array.from({ length: Math.floor((to - 6 - from) / 3) }, (_, i) => from + i * 3));
+  const cues: [string, number, number][] = [
+    ...ticks.map((f): [string, number, number] => ["tick", f, 0.35]),
+    ...[T.send1, T.send2, T.send3].map((f): [string, number, number] => ["send", f, 0.6]),
+    ...[T.agent1, T.agent2, T.photo, T.agent3].map((f): [string, number, number] => ["receive", f, 0.5]),
+    ["thud", T.cut, 1],
+  ];
+  return <>{cues.map(([name, at, volume], i) => <Sequence key={i} from={at} durationInFrames={30}><Audio src={staticFile(`sfx/${name}.wav`)} volume={volume} /></Sequence>)}</>;
+};
+
 export const DemoPhone = () => (
   <AbsoluteFill>
+    <Sfx />
     <Sequence durationInFrames={T.cut}><Main /></Sequence>
     <Sequence from={T.cut}><Outro /></Sequence>
   </AbsoluteFill>

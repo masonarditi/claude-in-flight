@@ -4,7 +4,7 @@
 
 ![demo](docs/demo-phone.gif)
 
-<sub>[Watch in HD](docs/demo-phone.mp4) · made with [Remotion](https://remotion.dev), source in [`video/`](video)</sub>
+<sub>[Watch in HD with sound](docs/demo-phone.mp4) · made with [Remotion](https://remotion.dev), source in [`video/`](video)</sub>
 
 claude-in-flight connects an iMessage agent (like [Poke](https://poke.com)) to a [Claude Code routine](https://code.claude.com/docs/en/routines) running in Anthropic's cloud, on your own Claude plan. You text a task; Claude works in your repos, opens a PR, and texts you back.
 
