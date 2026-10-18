@@ -8,7 +8,7 @@
 
 claude-in-flight connects an iMessage agent (like [Poke](https://poke.com)) to a [Claude Code routine](https://code.claude.com/docs/en/routines) running in Anthropic's cloud, on your own Claude plan. You text a task; Claude works in your repos, opens a PR, and texts you back.
 
-- **Free on many flights.** United, Delta, Alaska, Emirates and others offer free iMessage on board, usually text-only, which is all this needs. Check your airline before you fly.
+- **Free on many flights.** United, Delta, Alaska and Emirates offer free iMessage on board (usually text-only, which is all this needs), and JetBlue and Qatar Airways offer free Wi-Fi. Check your airline before you fly.
 - **Way faster than coding over plane Wi-Fi.** The work runs in the cloud on a fast connection; your phone only sends and receives a few texts.
 
 ```
@@ -17,7 +17,7 @@ you (iMessage) → your agent → relay (this repo, on Vercel) → Claude Code r
        └───────────── summary + PR link ◀── relay ◀───────────────────┘
 ```
 
-> Unofficial. Not affiliated with Anthropic, Poke, or any airline. Airline free-messaging policies vary by route and aircraft and change over time.
+> Unofficial. Not affiliated with Anthropic, Poke, or any airline. Airline logos via [Simple Icons](https://simpleicons.org) are trademarks of their owners. Free-messaging policies vary by route and aircraft and change over time.
 
 ## What you need
 

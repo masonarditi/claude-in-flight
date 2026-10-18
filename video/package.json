@@ -13,6 +13,8 @@
     "remotion": "4.0.536"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0"
+    "@types/react": "^19.0.0",
+    "simple-icons": "^16.35.0",
+    "svg-path-bbox": "^2.1.0"
   }
 }

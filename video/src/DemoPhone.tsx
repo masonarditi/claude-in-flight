@@ -1,13 +1,25 @@
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { siDelta, siEmirates, siJetblue, siQatarairways, siUnitedairlines } from "simple-icons";
+import { svgPathBbox } from "svg-path-bbox";
 
 const C = { bg: "#fbfbfa", blue: "#0a84ff", gray: "#e9e9eb", ink: "#111", dim: "#8e8e93", orange: "#d97757" };
-const AIRLINES = ["UNITED", "DELTA", "ALASKA", "EMIRATES"];
+const AIRLINES = [siUnitedairlines, siDelta, siJetblue, siEmirates, siQatarairways];
+
+const Plane = ({ size }: { size: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" style={{ transform: "rotate(45deg)" }}>
+    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="#fff" />
+  </svg>
+);
+
+const Badge = ({ size }: { size: number }) => (
+  <div style={{ width: size, height: size, borderRadius: size / 2, background: C.orange, display: "grid", placeItems: "center" }}><Plane size={size * 0.55} /></div>
+);
 const sans = "-apple-system, 'SF Pro Text', system-ui, sans-serif";
 const serif = "'New York', 'Iowan Old Style', Georgia, serif";
 
 const ME1 = "ask claude code to add dark mode to the settings page in my-app";
 const T = { type1: 12, send1: 80, dots1: [96, 140], agent1: 140, note: 190, dots2: [206, 250], agent2: 250, agent3: 285, type2: 322, send2: 336, fade: [470, 505] };
-export const PHONE_DURATION = 570;
+export const PHONE_DURATION = 600;
 
 const useSpring = (at: number) => {
   const frame = useCurrentFrame();
@@ -79,7 +91,7 @@ const Header = () => (
   <div style={{ height: 92, display: "flex", alignItems: "flex-start", justifyContent: "space-between", padding: "4px 16px 0" }}>
     <Circle><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 2 L2 9 L9 16" stroke="#000" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg></Circle>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <div style={{ width: 52, height: 52, borderRadius: 26, background: C.orange, display: "grid", placeItems: "center", fontSize: 26, boxShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>✈️</div>
+      <div style={{ borderRadius: 26, boxShadow: "0 1px 6px rgba(0,0,0,0.1)" }}><Badge size={52} /></div>
       <div style={{ marginTop: -6, padding: "3px 10px", borderRadius: 12, background: "#fff", boxShadow: "0 1px 6px rgba(0,0,0,0.12)", fontSize: 12.5, fontWeight: 600 }}>Claude in Flight ›</div>
     </div>
     <Circle><svg width="22" height="15" viewBox="0 0 22 15"><rect x="1" y="1.5" width="13.5" height="12" rx="3" stroke="#000" strokeWidth="1.8" fill="none" /><path d="M15.5 6 L20.5 3 L20.5 12 L15.5 9 Z" stroke="#000" strokeWidth="1.8" fill="none" strokeLinejoin="round" /></svg></Circle>
@@ -118,7 +130,7 @@ const Phone = () => {
             <Row at={T.send1}><Bubble me text={ME1} /></Row>
             <Row at={T.dots1[0]} until={T.dots1[1]} h={50}><Dots /></Row>
             <Row at={T.agent1}><Bubble text="on it ✈️ started task 3f9a2c" /></Row>
-            <Row at={T.note} h={40}><Center text="6 minutes later" /></Row>
+            <Row at={T.note} h={40}><Center text="30 seconds later" /></Row>
             <Row at={T.dots2[0]} until={T.dots2[1]} h={50}><Dots /></Row>
             <Row at={T.agent2}><Bubble text="done ✅ dark mode added to settings, tests pass" tail={false} /></Row>
             <Row at={T.agent3}><Bubble text="opened PR #42 in my-app ↗" /></Row>
@@ -132,28 +144,47 @@ const Phone = () => {
   );
 };
 
-const Airline = ({ name, at }: { name: string; at: number }) => {
+const Airline = ({ icon, at }: { icon: { title: string; path: string }; at: number }) => {
   const p = useSpring(at);
+  const [x0, y0, x1, y1] = svgPathBbox(icon.path);
+  const r = (x1 - x0) / (y1 - y0);
   return (
-    <div style={{ padding: "7px 14px", borderRadius: 10, border: "1px solid #e2e1dc", background: "#fff", fontFamily: sans, fontSize: 14, fontWeight: 800,
-      letterSpacing: 2.4, color: "#6b6a65", opacity: p, transform: `translateY(${(1 - p) * 10}px)` }}>{name}</div>
+    <svg width={Math.sqrt(1500 * r)} height={Math.sqrt(1500 / r)} viewBox={`${x0} ${y0} ${x1 - x0} ${y1 - y0}`} style={{ opacity: p * 0.75, transform: `translateY(${(1 - p) * 10}px)` }}>
+      <title>{icon.title}</title>
+      <path d={icon.path} fill="#55554f" />
+    </svg>
   );
 };
 
-export const DemoPhone = () => (
+const Outro = () => {
+  const p = useSpring(6);
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ background: "#0b0d12", opacity: interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" }), justifyContent: "center", alignItems: "center", gap: 18, fontFamily: sans, color: "#f5f5f7" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 22, opacity: p, transform: `scale(${0.92 + p * 0.08})` }}>
+        <Badge size={84} />
+        <div style={{ fontSize: 72, fontWeight: 800 }}>claude-in-flight</div>
+      </div>
+      <div style={{ fontSize: 30, color: C.dim, opacity: p }}>github.com/masonarditi/claude-in-flight</div>
+      <div style={{ fontSize: 20, color: C.dim, opacity: p }}>Unofficial · MIT</div>
+    </AbsoluteFill>
+  );
+};
+
+const Main = () => (
   <AbsoluteFill style={{ background: C.bg, fontFamily: sans, flexDirection: "row", alignItems: "center", padding: "0 110px 0 100px", justifyContent: "space-between" }}>
     <div style={{ width: 600, display: "flex", flexDirection: "column", gap: 22 }}>
       <div style={{ fontFamily: serif, fontSize: 64, lineHeight: 1.05, color: C.ink, letterSpacing: -1 }}>
         Code from 34,000 ft.<br /><span style={{ color: C.orange, fontStyle: "italic" }}>For free.</span>
       </div>
-      <div style={{ fontFamily: serif, fontSize: 23, lineHeight: 1.4, color: "#55554f" }}>
-        Text Claude Code over free in-flight messaging. No Wi-Fi to buy. It works in the cloud, opens a PR, and texts you back. Way faster than coding over plane Wi-Fi.
+      <div style={{ fontFamily: serif, fontSize: 24, lineHeight: 1.4, color: "#55554f" }}>
+        Text Claude Code over free in-flight messaging. No Wi‑Fi to buy, and way faster than plane Wi‑Fi.
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 1.5, color: C.dim }}>FREE MESSAGING ON</div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
-          {AIRLINES.map((a, i) => <Airline key={a} name={a} at={20 + i * 8} />)}
-          <span style={{ fontSize: 14, color: C.dim, marginLeft: 4 }}>& more</span>
+        <div style={{ display: "flex", gap: 26, alignItems: "center" }}>
+          {AIRLINES.map((a, i) => <Airline key={a.title} icon={a} at={20 + i * 8} />)}
+          <span style={{ fontSize: 14, color: C.dim }}>& more</span>
         </div>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8, fontSize: 17, color: C.ink }}>
@@ -164,5 +195,12 @@ export const DemoPhone = () => (
       </div>
     </div>
     <Phone />
+  </AbsoluteFill>
+);
+
+export const DemoPhone = () => (
+  <AbsoluteFill>
+    <Sequence durationInFrames={515}><Main /></Sequence>
+    <Sequence from={505}><Outro /></Sequence>
   </AbsoluteFill>
 );
