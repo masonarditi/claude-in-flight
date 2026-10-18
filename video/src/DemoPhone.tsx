@@ -2,16 +2,16 @@ import { AbsoluteFill, Audio, getInputProps, interpolate, Sequence, spring, stat
 import { siAmericanairlines, siDelta, siSouthwestairlines, siUnitedairlines } from "simple-icons";
 import { svgPathBbox } from "svg-path-bbox";
 
-const C = { bg: "#fbfbfa", blue: "#0a84ff", gray: "#e9e9eb", ink: "#111", dim: "#8e8e93", orange: "#d97757" };
+export const C = { bg: "#fbfbfa", blue: "#0a84ff", gray: "#e9e9eb", ink: "#111", dim: "#8e8e93", orange: "#d97757" };
 const AIRLINES: { icon: { title: string; path: string }; crop?: number[] }[] = [
   { icon: siUnitedairlines }, { icon: siDelta, crop: [0, 10.15, 4.2, 3.7] }, { icon: siAmericanairlines }, { icon: siSouthwestairlines },
 ];
 
-const Badge = ({ size }: { size: number }) => (
+export const Badge = ({ size }: { size: number }) => (
   <div style={{ width: size, height: size, borderRadius: size / 2, background: "linear-gradient(180deg, #ffcf9e, #ffab6b)", display: "grid", placeItems: "center", fontSize: size * 0.5 }}>✈️</div>
 );
-const sans = "-apple-system, 'SF Pro Text', system-ui, sans-serif";
-const serif = "'New York', 'Iowan Old Style', Georgia, serif";
+export const sans = "-apple-system, 'SF Pro Text', system-ui, sans-serif";
+export const serif = "'New York', 'Iowan Old Style', Georgia, serif";
 
 const ME1 = "ask claude code to add dark mode to the settings page in my-app";
 const ME2 = "you're goated";
@@ -19,7 +19,7 @@ const ME3 = "now make goon bot";
 const T = { type1: 12, send1: 80, dots1: [96, 140], agent1: 140, note: 190, dots2: [206, 250], agent2: 250, photo: 272, agent3: 312, type2: 345, send2: 375, type3: 400, send3: 432, cut: 447 };
 export const PHONE_DURATION = 447 + 90;
 
-const useSpring = (at: number) => {
+export const useSpring = (at: number) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return spring({ frame: frame - at, fps, config: { damping: 18, mass: 0.7 } });
@@ -42,7 +42,7 @@ const Row = ({ at, until = Infinity, h = 120, children }: { at: number; until?: 
   );
 };
 
-const Bubble = ({ me, text, tail = true }: { me?: boolean; text: string; tail?: boolean }) => (
+export const Bubble = ({ me, text, tail = true }: { me?: boolean; text: string; tail?: boolean }) => (
   <div style={{ alignSelf: me ? "flex-end" : "flex-start", position: "relative", maxWidth: 236, margin: "3px 4px", padding: "8px 13px", borderRadius: 19,
     fontSize: 15.5, lineHeight: 1.3, background: me ? C.blue : C.gray, color: me ? "#fff" : C.ink }}>
     {text}
@@ -90,7 +90,7 @@ const Center = ({ text }: { text: string }) => (
   <div style={{ alignSelf: "center", fontSize: 11.5, color: C.dim, margin: "10px 0 6px" }}>{text}</div>
 );
 
-const StatusBar = () => (
+export const StatusBar = () => (
   <div style={{ height: 54, position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 30px 0 34px", fontSize: 15, fontWeight: 600 }}>
     <span>9:41</span>
     <div style={{ position: "absolute", left: "50%", top: 11, transform: "translateX(-50%)", width: 100, height: 30, borderRadius: 16, background: "#000" }} />
@@ -179,7 +179,7 @@ const Airline = ({ icon, crop, at }: { icon: { title: string; path: string }; cr
   );
 };
 
-const Outro = () => {
+export const Outro = () => {
   const p = useSpring(4);
   return (
     <AbsoluteFill style={{ background: "#0b0d12", justifyContent: "center", alignItems: "center", gap: 18, fontFamily: sans, color: "#f5f5f7" }}>
