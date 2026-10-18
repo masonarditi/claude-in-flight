@@ -4,7 +4,7 @@
 
 ![demo](docs/demo-phone.gif)
 
-<sub>made with ❤️ by [@createdbymason](https://x.com/createdbymason) · [watch in HD with sound](docs/demo-phone.mp4)</sub>
+<sub>made with ❤️ by [@createdbymason](https://x.com/createdbymason)</sub>
 
 Text a task to your iMessage agent (like [Poke](https://poke.com)). A [Claude Code routine](https://code.claude.com/docs/en/routines) does it in the cloud on your Claude plan, opens a PR, and texts you back.
 
