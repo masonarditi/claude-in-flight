@@ -1,0 +1,14 @@
+{
+  "name": "claude-in-flight",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "@upstash/redis": "^1.39.0",
+    "mcp-handler": "^2.3.0",
+    "zod": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}
