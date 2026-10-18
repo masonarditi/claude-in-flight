@@ -28,10 +28,12 @@ you (iMessage) → your agent → relay (this repo, on Vercel) → Claude Code r
 ### 1. Create the Claude task
 
 1. Go to [claude.ai/code/routines](https://claude.ai/code/routines) → **New task**.
-2. Paste [`routine-prompt.md`](routine-prompt.md) as the instructions and pick your model.
-3. **Advanced settings → Repository**: add the repos you want to work on.
-4. **Trigger**: switch **Schedule** to **API** and create the task.
-5. Open **Edit → API trigger**, copy the **Fire URL**, and click **Generate token** (shown once).
+2. Paste [`routine-prompt.md`](routine-prompt.md) as the instructions.
+3. **Model**: explicitly select **Opus** in the model dropdown. Don't leave it on Default.
+4. **Advanced settings → Repository**: add the repos you want to work on.
+5. **Cloud environment**: create a new environment and set **Network access** to **Full**, so Claude can browse any site.
+6. **Trigger**: switch **Schedule** to **API** and create the task.
+7. Open **Edit → API trigger**, copy the **Fire URL**, and click **Generate token** (shown once).
 
 ### 2. Deploy the relay
 
@@ -63,7 +65,7 @@ Then text it: *"Ask Claude Code to add a hello line to the README in &lt;repo&gt
 
 - **Name the repo** in each text. Every text starts a fresh cloud session.
 - **Results** are pushed to `NOTIFY_URL` as `{"message", "task_id"}` with `Bearer NOTIFY_TOKEN`, and are also available for 7 days through the `get_task_result` tool, for agents without an inbound webhook.
-- **Web tasks** work out of the box: cloud sessions include WebFetch/WebSearch and headless Chromium. Set the environment's network access to **Full** to reach sites beyond the default allowlist.
+- **Web tasks** work out of the box: cloud sessions include WebFetch/WebSearch and headless Chromium, and Full network access lets them reach any site.
 
 ## Limits
 
