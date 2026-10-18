@@ -23,7 +23,7 @@ you → iMessage agent → relay (this repo, on Vercel) → Claude Code routine
 
 Claude **Pro or Max** · GitHub repos with the [Claude GitHub App](https://github.com/apps/claude) · a free **Vercel** account · an iMessage agent that supports **custom MCP servers** (tested with Poke)
 
-## Setup (~10 min)
+## Setup (~5 min)
 
 **1. Create the Claude task.** At [claude.ai/code/routines](https://claude.ai/code/routines) → **New task**:
 - Instructions: paste [`routine-prompt.md`](routine-prompt.md)
