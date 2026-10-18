@@ -221,9 +221,10 @@ const Main = () => (
 
 const Sfx = () => {
   const dir = (getInputProps() as { sfx?: string }).sfx ?? "sfx";
+  const tickVolume = dir === "sfx" ? 0.15 : 0.6;
   const ticks = [[T.type1, T.send1], [T.type2, T.send2], [T.type3, T.send3]].flatMap(([from, to]) => Array.from({ length: Math.floor((to - 6 - from) / 3) }, (_, i) => from + i * 3));
   const cues: [string, number, number][] = [
-    ...ticks.map((f): [string, number, number] => ["tick", f, 0.15]),
+    ...ticks.map((f): [string, number, number] => ["tick", f, tickVolume]),
     ...[T.send1, T.send2, T.send3].map((f): [string, number, number] => ["send", f, 0.5]),
     ...[T.agent1, T.agent2, T.photo, T.agent3].map((f): [string, number, number] => ["receive", f, 0.45]),
     ["outro", T.cut, 0.8],
