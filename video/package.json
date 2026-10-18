@@ -4,7 +4,8 @@
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts Demo ../docs/demo.mp4 && remotion render src/index.ts Demo ../docs/demo.gif --codec gif --every-nth-frame 2 --scale 0.6",
-    "render:phone": "remotion render src/index.ts DemoPhone ../docs/demo-phone.mp4 && remotion render src/index.ts DemoPhone ../docs/demo-phone.gif --codec gif --every-nth-frame 2 --scale 0.625"
+    "render:phone": "remotion render src/index.ts DemoPhone ../docs/demo-phone.mp4 && remotion render src/index.ts DemoPhone ../docs/demo-phone.gif --codec gif --every-nth-frame 2 --scale 0.625",
+    "render:phone:apple": "remotion render src/index.ts DemoPhone out/demo-phone-apple.mp4 --props='{\"sfx\":\"sfx-apple\"}'"
   },
   "dependencies": {
     "@remotion/cli": "4.0.536",

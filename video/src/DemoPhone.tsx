@@ -1,4 +1,4 @@
-import { AbsoluteFill, Audio, interpolate, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, getInputProps, interpolate, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { siAmericanairlines, siDelta, siSouthwestairlines, siUnitedairlines } from "simple-icons";
 import { svgPathBbox } from "svg-path-bbox";
 
@@ -220,6 +220,7 @@ const Main = () => (
 );
 
 const Sfx = () => {
+  const dir = (getInputProps() as { sfx?: string }).sfx ?? "sfx";
   const ticks = [[T.type1, T.send1], [T.type2, T.send2], [T.type3, T.send3]].flatMap(([from, to]) => Array.from({ length: Math.floor((to - 6 - from) / 3) }, (_, i) => from + i * 3));
   const cues: [string, number, number][] = [
     ...ticks.map((f): [string, number, number] => ["tick", f, 0.15]),
@@ -227,7 +228,7 @@ const Sfx = () => {
     ...[T.agent1, T.agent2, T.photo, T.agent3].map((f): [string, number, number] => ["receive", f, 0.45]),
     ["thud", T.cut, 0.9],
   ];
-  return <>{cues.map(([name, at, volume], i) => <Sequence key={i} from={at} durationInFrames={30}><Audio src={staticFile(`sfx/${name}.wav`)} volume={volume} /></Sequence>)}</>;
+  return <>{cues.map(([name, at, volume], i) => <Sequence key={i} from={at} durationInFrames={45}><Audio src={staticFile(`${dir}/${name}.wav`)} volume={volume} /></Sequence>)}</>;
 };
 
 export const DemoPhone = () => (
