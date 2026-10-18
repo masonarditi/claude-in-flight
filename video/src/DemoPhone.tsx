@@ -7,21 +7,17 @@ const AIRLINES: { icon: { title: string; path: string }; crop?: number[] }[] = [
   { icon: siUnitedairlines }, { icon: siDelta, crop: [0, 10.15, 4.2, 3.7] }, { icon: siAmericanairlines }, { icon: siSouthwestairlines },
 ];
 
-const Plane = ({ size }: { size: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" style={{ transform: "rotate(45deg)" }}>
-    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="#fff" />
-  </svg>
-);
-
 const Badge = ({ size }: { size: number }) => (
-  <div style={{ width: size, height: size, borderRadius: size / 2, background: C.orange, display: "grid", placeItems: "center" }}><Plane size={size * 0.55} /></div>
+  <div style={{ width: size, height: size, borderRadius: size / 2, background: "linear-gradient(180deg, #ffcf9e, #ffab6b)", display: "grid", placeItems: "center", fontSize: size * 0.5 }}>✈️</div>
 );
 const sans = "-apple-system, 'SF Pro Text', system-ui, sans-serif";
 const serif = "'New York', 'Iowan Old Style', Georgia, serif";
 
 const ME1 = "ask claude code to add dark mode to the settings page in my-app";
-const T = { type1: 12, send1: 80, dots1: [96, 140], agent1: 140, note: 190, dots2: [206, 250], agent2: 250, photo: 272, agent3: 312, type2: 345, send2: 359, fade: [470, 505] };
-export const PHONE_DURATION = 600;
+const ME2 = "you're goated";
+const ME3 = "now make goon bot";
+const T = { type1: 12, send1: 80, dots1: [96, 140], agent1: 140, note: 190, dots2: [206, 250], agent2: 250, photo: 272, agent3: 312, type2: 345, send2: 375, type3: 400, send3: 432, cut: 447 };
+export const PHONE_DURATION = 447 + 90;
 
 const useSpring = (at: number) => {
   const frame = useCurrentFrame();
@@ -126,8 +122,8 @@ const Header = () => (
 
 const InputBar = () => {
   const frame = useCurrentFrame();
-  const typed = frame >= T.type1 && frame < T.send1 ? ME1.slice(0, Math.floor((frame - T.type1) * (ME1.length / (T.send1 - T.type1 - 6))))
-    : frame >= T.type2 && frame < T.send2 ? "🙌" : "";
+  const typing = ([text, from, to]: [string, number, number]) => frame >= from && frame < to ? text.slice(0, Math.ceil((frame - from) * (text.length / (to - from - 6)))) : "";
+  const typed = [[ME1, T.type1, T.send1], [ME2, T.type2, T.send2], [ME3, T.type3, T.send3]].map((m) => typing(m as [string, number, number])).join("");
   return (
     <div style={{ height: 66, display: "flex", alignItems: "center", gap: 8, padding: "0 12px 14px" }}>
       <div style={{ width: 36, height: 36, borderRadius: 18, background: "#f1f1f3", display: "grid", placeItems: "center", fontSize: 24, fontWeight: 300, color: "#444" }}>+</div>
@@ -140,8 +136,6 @@ const InputBar = () => {
 };
 
 const Phone = () => {
-  const frame = useCurrentFrame();
-  const chat = interpolate(frame, T.fade, [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <div style={{ position: "relative", width: 344, height: 712, borderRadius: 62, padding: 4, background: "linear-gradient(135deg,#d8d3cd,#8f8a84 45%,#cfcac4 70%,#7e7974)", boxShadow: "0 40px 90px rgba(0,0,0,0.18)" }}>
       {[[-3, 120, 26], [-3, 168, 52], [-3, 230, 52], [341, 190, 80]].map(([x, y, h], i) => (
@@ -151,7 +145,7 @@ const Phone = () => {
         <div style={{ width: "100%", height: "100%", borderRadius: 48, background: "#fff", overflow: "hidden", display: "flex", flexDirection: "column", fontFamily: sans, color: C.ink, position: "relative" }}>
           <StatusBar />
           <Header />
-          <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 10px", opacity: chat }}>
+          <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 10px" }}>
             <Row at={T.send1 - 2} h={40}><Center text="Today 9:41 AM" /></Row>
             <Row at={T.send1}><Bubble me text={ME1} /></Row>
             <Row at={T.dots1[0]} until={T.dots1[1]} h={50}><Dots /></Row>
@@ -161,7 +155,8 @@ const Phone = () => {
             <Row at={T.agent2}><Bubble text="done ✅ dark mode added to settings, tests pass" tail={false} /></Row>
             <Row at={T.photo} h={270}><Shot /></Row>
             <Row at={T.agent3}><Bubble text="opened PR #42 in my-app ↗" /></Row>
-            <Row at={T.send2} h={60}><Bubble me text="🙌" /></Row>
+            <Row at={T.send2} h={60}><Bubble me text={ME2} tail={false} /></Row>
+            <Row at={T.send3} h={60}><Bubble me text={ME3} /></Row>
           </div>
           <InputBar />
           <div style={{ position: "absolute", bottom: 7, left: "50%", transform: "translateX(-50%)", width: 120, height: 5, borderRadius: 3, background: "#000" }} />
@@ -185,16 +180,14 @@ const Airline = ({ icon, crop, at }: { icon: { title: string; path: string }; cr
 };
 
 const Outro = () => {
-  const p = useSpring(6);
-  const frame = useCurrentFrame();
+  const p = useSpring(4);
   return (
-    <AbsoluteFill style={{ background: "#0b0d12", opacity: interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" }), justifyContent: "center", alignItems: "center", gap: 18, fontFamily: sans, color: "#f5f5f7" }}>
+    <AbsoluteFill style={{ background: "#0b0d12", justifyContent: "center", alignItems: "center", gap: 18, fontFamily: sans, color: "#f5f5f7" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 22, opacity: p, transform: `scale(${0.92 + p * 0.08})` }}>
         <Badge size={84} />
         <div style={{ fontSize: 72, fontWeight: 800 }}>claude-in-flight</div>
       </div>
       <div style={{ fontSize: 30, color: C.dim, opacity: p }}>github.com/masonarditi/claude-in-flight</div>
-      <div style={{ fontSize: 20, color: C.dim, opacity: p }}>Unofficial · MIT</div>
     </AbsoluteFill>
   );
 };
@@ -228,7 +221,7 @@ const Main = () => (
 
 export const DemoPhone = () => (
   <AbsoluteFill>
-    <Sequence durationInFrames={515}><Main /></Sequence>
-    <Sequence from={505}><Outro /></Sequence>
+    <Sequence durationInFrames={T.cut}><Main /></Sequence>
+    <Sequence from={T.cut}><Outro /></Sequence>
   </AbsoluteFill>
 );
