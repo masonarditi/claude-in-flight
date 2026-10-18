@@ -1,0 +1,17 @@
+{
+  "name": "claude-in-flight-video",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Demo ../docs/demo.mp4 && remotion render src/index.ts Demo ../docs/demo.gif --codec gif --every-nth-frame 2 --scale 0.6"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.536",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.536"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0"
+  }
+}

@@ -4,6 +4,8 @@ Text coding tasks to Claude Code from a plane — or anywhere you only have iMes
 
 ![demo](docs/demo.gif)
 
+<sub>[Watch in HD](docs/demo.mp4) · made with [Remotion](https://remotion.dev), source in [`video/`](video)</sub>
+
 In-flight Wi-Fi often lets you message for free but blocks everything else. claude-in-flight connects an iMessage agent (like [Poke](https://poke.com)) to a [Claude Code routine](https://code.claude.com/docs/en/routines) running in Anthropic's cloud, on your own Claude plan. You text a task; Claude works in your repos, opens a PR, and texts you back.
 
 ```
