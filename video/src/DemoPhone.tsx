@@ -226,9 +226,9 @@ const Sfx = () => {
     ...ticks.map((f): [string, number, number] => ["tick", f, 0.15]),
     ...[T.send1, T.send2, T.send3].map((f): [string, number, number] => ["send", f, 0.5]),
     ...[T.agent1, T.agent2, T.photo, T.agent3].map((f): [string, number, number] => ["receive", f, 0.45]),
-    ["thud", T.cut, 0.9],
+    ["outro", T.cut, 0.8],
   ];
-  return <>{cues.map(([name, at, volume], i) => <Sequence key={i} from={at} durationInFrames={45}><Audio src={staticFile(`${dir}/${name}.wav`)} volume={volume} /></Sequence>)}</>;
+  return <>{cues.map(([name, at, volume], i) => <Sequence key={i} from={at} durationInFrames={55}><Audio src={staticFile(`${dir}/${name}.wav`)} volume={volume} /></Sequence>)}</>;
 };
 
 export const DemoPhone = () => (

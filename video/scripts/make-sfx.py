@@ -54,6 +54,16 @@ n = int(0.025 * RATE)
 crisp = bandpass(noise(n), lambda t: 3200, 1.4)
 write("tick", [0.8 * c * math.exp(-t * 420) + 0.5 * math.sin(2 * math.pi * 1150 * t) * math.exp(-t * 300) for c, t in zip(crisp, (i / RATE for i in range(n)))])
 
-# Outro: a low thud for the hard cut.
-n = int(0.9 * RATE)
-write("thud", [0.9 * math.sin(2 * math.pi * (70 - 30 * t) * t) * math.exp(-4.5 * t) + 0.2 * random.uniform(-1, 1) * math.exp(-40 * t) for t in (i / RATE for i in range(n))])
+# Outro: a sparkly, magical shimmer of quick high plinks with a soft echo.
+n = int(1.6 * RATE)
+notes = [random.choice([1568, 1760, 2093, 2349, 2637, 3136]) for _ in range(14)]
+dry = [0.0] * n
+for k, f in enumerate(notes):
+    start = int((k * 0.075 + random.uniform(0, 0.03)) * RATE)
+    for i in range(start, min(n, start + int(0.35 * RATE))):
+        t = (i - start) / RATE
+        dry[i] += math.sin(2 * math.pi * f * t) * math.exp(-t * 14) * (1 - k / 18)
+wet = dry[:]
+for i in range(int(0.11 * RATE), n):
+    wet[i] += 0.45 * wet[i - int(0.11 * RATE)]
+write("outro", [w * min(1, (n - i) / (0.3 * RATE)) for i, w in enumerate(wet)])
